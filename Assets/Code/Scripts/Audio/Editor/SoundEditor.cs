@@ -67,6 +67,16 @@ public class SoundEditor : Editor
 
         EditorGUILayout.PropertyField(_mixerGroupOverrideProp);
 
+        EditorGUILayout.Space();
+
+        using (new EditorGUI.DisabledGroupScope(SoundManager.Instance == null))
+        {
+            if (GUILayout.Button("Play Preview"))
+            {
+                SoundManager.PlaySound((Sound)target);
+            }
+        }
+
         // Apply changes
         serializedObject.ApplyModifiedProperties();
     }

@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2f118cd9a4ff346917c60459befaf0, type: 3}
+  m_Name: footstep
+  m_EditorClassIdentifier: Assembly-CSharp::Sound
+  type: 1
+  clips:
+  - {fileID: 8300000, guid: 72eca73785ea22a42a2f4bfcb11f40c5, type: 3}
+  - {fileID: 8300000, guid: ca6afc2de819c9f4598707f47bf05d8b, type: 3}
+  - {fileID: 8300000, guid: 2f592cbf70daeeb4b9f6adb3313fb5d1, type: 3}
+  - {fileID: 8300000, guid: c078366a0f60329489020da6993d5d3d, type: 3}
+  - {fileID: 8300000, guid: ff7f5ec978a779543899b8ff17b8b35e, type: 3}
+  - {fileID: 8300000, guid: 651ab2ee85fb30a49bb80c9250bdebdb, type: 3}
+  volume: 0.15
+  pitch: 0.65
+  mixerGroupOverride: {fileID: 0}

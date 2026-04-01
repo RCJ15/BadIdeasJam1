@@ -240,5 +240,10 @@ public static class CoroutineUtility
             yield return null;
         }
     }
+
+    internal static object GetWait(object duration)
+    {
+        throw new NotImplementedException();
+    }
     #endregion
 }

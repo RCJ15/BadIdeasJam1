@@ -53,7 +53,7 @@ public class SoundList : ScriptableObject
                         continue;
                     }
 
-                    _nameToSoundDictionary.Add(sound.name.ToLower(), sound);
+                    _nameToSoundDictionary.Add(sound.name.ToLowerInvariant(), sound);
                 }
             }
 
@@ -79,7 +79,7 @@ public class SoundList : ScriptableObject
             return null;
         }
 
-        name = name.ToLower();
+        name = name.ToLowerInvariant();
 
         // Name is not present in the dictionary
         if (!NameToSoundDictionary.ContainsKey(name))

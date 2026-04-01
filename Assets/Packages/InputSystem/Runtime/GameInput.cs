@@ -18,9 +18,11 @@ namespace Input
 		public static Vector2Button Look { get; private set; }
 		public static PressButton Attack { get; private set; }
 		public static PressButton Interact { get; private set; }
-		public static PressButton DialogueProceed { get; private set; }
+		public static PressButton Crouch { get; private set; }
 		public static PressButton Jump { get; private set; }
-		public static PressButton Dash { get; private set; }
+		public static PressButton Previous { get; private set; }
+		public static PressButton Next { get; private set; }
+		public static PressButton Sprint { get; private set; }
 
 		public static class UI
 		{
@@ -34,7 +36,6 @@ namespace Input
 			public static Vector2Button ScrollWheel { get; private set; }
 			public static PressButton TrackedDevicePosition { get; private set; }
 			public static PressButton TrackedDeviceOrientation { get; private set; }
-			public static PressButton Pause { get; private set; }
 		}
 		// Generation End
 	}

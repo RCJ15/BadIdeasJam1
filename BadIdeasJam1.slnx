@@ -1,9 +1,12 @@
 ﻿<Solution>
+  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Input.Editor.csproj" />
   <Project Path="CacheComponentAttribute.csproj" />
+  <Project Path="TextJuicer.csproj" />
+  <Project Path="DebugTools.csproj" />
   <Project Path="Input.csproj" />
-  <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
   <Project Path="DOTween.Modules.csproj" />
+  <Project Path="TextJuicer-Editor.csproj" />
   <Project Path="CacheComponentAttribute.Editor.csproj" />
 </Solution>

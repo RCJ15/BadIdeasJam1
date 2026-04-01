@@ -1,0 +1,27 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!221 &22100000
+AnimatorOverrideController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Roomba
+  m_Controller: {fileID: 9100000, guid: 42e5daae335a28d41897c07569efce36, type: 2}
+  m_Clips:
+  - m_OriginalClip: {fileID: 7400000, guid: 007ff23ea28cd4e4686f5a84be7ba912, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b6bc278c298f47e469dd76a86b174971, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: facf3045b731a7344a66958cf3c4ae1c, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: b13dfacfbb8f2a242bb8ec10336ec13f, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 3d1c2122cf39c514c83e235566f388fd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 67cdcf6421e4c6249af53a768da86f34, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 0de0c40894be9c34d95788c77b364092, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: 4b447fe38e3f6e94d9f670dbab945ea2, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 759beb0e4910d6d49a60c4fc764c0121, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a4850653553f5214ba526777b9076ba1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 2d7beaef8584dd14ead25dd3bbc054bd, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a4850653553f5214ba526777b9076ba1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 84edb8efaf9a2a44691bb2cf2b6da8e0, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a4850653553f5214ba526777b9076ba1, type: 2}
+  - m_OriginalClip: {fileID: 7400000, guid: 7a5bb122fd58e0c4b813ef8618747fc4, type: 2}
+    m_OverrideClip: {fileID: 7400000, guid: a4850653553f5214ba526777b9076ba1, type: 2}

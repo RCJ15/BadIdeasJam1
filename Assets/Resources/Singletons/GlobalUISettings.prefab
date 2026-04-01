@@ -1,0 +1,61 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1519658411693938857
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5664711496817241244}
+  - component: {fileID: 5197844845349608229}
+  m_Layer: 0
+  m_Name: GlobalUISettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5664711496817241244
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519658411693938857}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5197844845349608229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1519658411693938857}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d77a8955d5726234ab5255d34f3c027d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GlobalUISettings
+  SelectedSize: 1.05
+  PressedSize: 1.15
+  NormalSizeTween:
+    Ease: 3
+    Duration: 0.25
+  PressedSizeTween:
+    Ease: 18
+    Duration: 0.3
+  FromPressedSizeTween:
+    Ease: 27
+    Duration: 0.2
+  ShakeIntensity: 2
+  TimeBtwShakes: 0.01
+  HoverSfx: {fileID: 11400000, guid: 3b0bd2b9e1c1d0340a1e5c31b422fbae, type: 2}
+  ClickSfx: {fileID: 11400000, guid: 0f5093df689dd2448b4688e0c2d70fd6, type: 2}

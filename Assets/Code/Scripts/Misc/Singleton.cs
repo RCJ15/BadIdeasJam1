@@ -19,11 +19,13 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
     public static T Instance { get; private set; }
     private static readonly Type ThisType = typeof(T);
 
+    /*
     /// <summary>
     /// Is true if this instance was destroyed in the <see cref="Awake"/> method. <para/>
     /// Use this to return out of doing any code in the <see cref="Awake"/> method in case this instance got destroyed.
     /// </summary>
     protected bool isDestroyed;
+    */
 
     internal GameObject rootObject;
 
@@ -43,12 +45,14 @@ public class Singleton<T> : MonoBehaviour where T : Singleton<T>
         }
 
         // Destroy this singleton instance if an instance already exists
+        /*
         if (Instance != null)
         {
             isDestroyed = true;
             Destroy(transform.root.gameObject);
             return; // Make sure to return so nothing below will happen
         }
+        */
 
         // Set instance
         Instance = (T)this;
@@ -139,6 +143,12 @@ public class SingletonModeAttribute : Attribute
 
         // Create instance
         newObj = Resources.Load<GameObject>(Singleton<T>.FOLDER + "/" + name);
+
+        if (newObj == null)
+        {
+            Debug.LogError("Could not find singleton prefab for " + name + " in folder: " + Singleton<T>.FOLDER);
+            return;
+        }
 
         newObj = UnityEngine.Object.Instantiate(newObj);
         newObj.name = name;

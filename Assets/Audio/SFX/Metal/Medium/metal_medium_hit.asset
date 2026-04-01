@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2f118cd9a4ff346917c60459befaf0, type: 3}
+  m_Name: metal_medium_hit
+  m_EditorClassIdentifier: Assembly-CSharp::Sound
+  type: 1
+  clips:
+  - {fileID: 8300000, guid: eb9dfbbb2e2ccbe42b52b1062345341b, type: 3}
+  - {fileID: 8300000, guid: 34e1a79e2346ad645bf4d9fdd59510aa, type: 3}
+  - {fileID: 8300000, guid: 5ce5999d9b466fe47b50f354ca26251e, type: 3}
+  volume: 1
+  pitch: 0.61
+  mixerGroupOverride: {fileID: 0}

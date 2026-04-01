@@ -83,8 +83,8 @@ public class ComponentCollectionPropertyDrawer : PropertyDrawer
 
         buttonRect.y += position.height - _elementHeight - (array.arraySize <= 0 ? 4 : 2);
         buttonRect.height = _elementHeight;
-        buttonRect.width = 58;
-        buttonRect.x = position.width - buttonRect.width - 8;
+        buttonRect.width = 60;
+        buttonRect.x = position.width - buttonRect.width;
 
         // Change GUI style of the toolbar buttons to nothing
         ReorderableList.Defaults defaults = ReorderableList.defaultBehaviours;
@@ -116,7 +116,7 @@ public class ComponentCollectionPropertyDrawer : PropertyDrawer
         {
             _cacheButtonStyle = new GUIStyle(EditorStyles.boldLabel);
 
-            _cacheButtonStyle.alignment = TextAnchor.MiddleCenter;
+            _cacheButtonStyle.alignment = TextAnchor.MiddleRight;
 
             // Change color of button on hover and active
             _cacheButtonStyle.hover.textColor = Color.white;
@@ -205,7 +205,7 @@ public class ComponentCollectionPropertyDrawer : PropertyDrawer
             // Get all components and filter manually
 
             // Disallow components that don't inherit from the type
-            bool IsValidObj(Object obj) => type.IsAssignableFrom(obj.GetType());
+            bool IsValidObj(Object obj) => obj == null ? false : type.IsAssignableFrom(obj.GetType());
 
             // In children
             if (cacheMethod.HasFlag(CacheMethod.InChildren))

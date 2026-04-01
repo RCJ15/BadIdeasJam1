@@ -8,6 +8,14 @@ using UnityEditor;
 /// </summary>
 public static class SoundCreateMenuItem
 {
+    private static readonly char[] _trimAtEnd = new char[]
+    {
+        // Numbers
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+        // Whitespace
+        ' ', '\n', '\r', '\t', '_', '-'
+    };
+
     [MenuItem("Assets/Create/Audio/Sound", priority = 38)]
     public static void CreateSound()
     {
@@ -54,8 +62,8 @@ public static class SoundCreateMenuItem
                     sound.Type = Sound.SoundType.Single;
                 }
 
-                // Name is the first clip name but fancy
-                name = FancyAutoNaming(clips[0].name);
+                // Name is the first clip name
+                name = clips[0].name.TrimEnd(_trimAtEnd);
 
                 // Set sound clips
                 sound.Clips = clips.ToArray();
@@ -68,7 +76,7 @@ public static class SoundCreateMenuItem
         ProjectWindowUtil.CreateAsset(sound, activeFolderPath + "/" + name + ".asset");
     }
 
-
+    /*
     private static string FancyAutoNaming(string name)
     {
         string newName = name;
@@ -160,4 +168,5 @@ public static class SoundCreateMenuItem
             return returnData;
         }
     }
+    */
 }

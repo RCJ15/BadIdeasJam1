@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2f118cd9a4ff346917c60459befaf0, type: 3}
+  m_Name: command_queue_hover
+  m_EditorClassIdentifier: Assembly-CSharp::Sound
+  type: 1
+  clips:
+  - {fileID: 8300000, guid: 945158983712c5447847407c4291c043, type: 3}
+  - {fileID: 8300000, guid: 227d21801bfe7f94586171be0e864937, type: 3}
+  - {fileID: 8300000, guid: 7293eb803b1708142853c8ba5fe06c71, type: 3}
+  volume: 0.08
+  pitch: 1.61
+  mixerGroupOverride: {fileID: 0}

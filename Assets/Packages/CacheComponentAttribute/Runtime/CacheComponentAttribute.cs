@@ -28,7 +28,7 @@ public class CacheComponentAttribute : PropertyAttribute
     /// </summary>
     public bool AlwaysCache = false;
     /// <summary>
-    /// If the "Cache" button on a <see cref="ComponentCollection{T}"/> should not be shown. This is false by default.<para/>
+    /// If the "Cache" button on a <see cref="ComponentCollection{T}"/> should be hidden. This is false by default.<para/>
     /// Only works when this attribute is on a <see cref="ComponentCollection{T}"/>.
     /// </summary>
     public bool HideCacheButton = false;

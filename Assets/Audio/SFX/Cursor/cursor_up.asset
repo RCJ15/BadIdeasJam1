@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2f118cd9a4ff346917c60459befaf0, type: 3}
+  m_Name: cursor_up
+  m_EditorClassIdentifier: Assembly-CSharp::Sound
+  type: 1
+  clips:
+  - {fileID: 8300000, guid: 3f2a75defc4010447926f9e8fcb83f26, type: 3}
+  - {fileID: 8300000, guid: 88187bc0dfd12874485034268d67cfa9, type: 3}
+  - {fileID: 8300000, guid: 7e13d19985c51284b8856a1ea6ac9d80, type: 3}
+  volume: 1
+  pitch: 1
+  mixerGroupOverride: {fileID: 0}

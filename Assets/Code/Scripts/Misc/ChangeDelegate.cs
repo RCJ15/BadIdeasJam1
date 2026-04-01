@@ -1,0 +1,1 @@
+public delegate void ChangeDelegate<T>(T oldValue, T newValue);
