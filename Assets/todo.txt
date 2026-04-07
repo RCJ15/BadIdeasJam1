@@ -1,0 +1,31 @@
+✅ Flippable command icons
+✅ Rename <ATTACK> to <BASH>
+✅ Rename <HEAL> to <RECOVER>
+✅ Convert all Camera.main to GameCamera
+Fix misalignment on WorldTooltips
+Fix screen transition on weird resolutions
+Fix screen transition image on edges of screen
+Unique icon for <TURN_AROUND>
+✅ Delete button when hovering over commands
+Better "run away" logic for Green Box with Legs (reverse A*)
+Fix "face toward" functionality in code to work regardless of distance
+Make "Awaiting Turn..." message not display on battle win
+Damage numbers
+Improve overworld
+Dialog system - story
+Battle UI rework - Windows!
+Tutorial
+Proper ending - Outside sequence
+Actual boss battle
+Mini boss?
+Level up system
+New abilities on level up
+Make <RECOVER> not unlockable by default
+Equipment system, one for each body part
+
+New commands:
+<STALL> - Do nothing
+<CONFUSE> - Turn the object in front of you around.
+<BLOCK> - The next instance of damage you receive is reduced to 0.
+<THROW> - Shoot a ranged projectile forwards in a straight line which deals (DMG/2).
+<REBOOT> - Regain all of your ENERGY. You cannot execute any commands on your next turn.

@@ -14,6 +14,19 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 {
     public UnityEvent OnClick => onClick;
 
+    public bool Interactable
+    {
+        get => _interactable;
+        set
+        {
+            if (_interactable == value) return;
+            
+            _interactable = value;
+            UpdateState();
+        }
+    }
+    private bool _interactable = true;
+
     //[Header("Custom button properties")]
     [SerializeField] private UnityEvent onClick;
     [SerializeField] private RectTransform visualsRect;
@@ -59,6 +72,8 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (!Interactable) return;
+
         onClick?.Invoke();
         _settings.ClickSfx?.Play();
     }
@@ -73,30 +88,32 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         if (_oldSelect == _select && _oldPressed == _pressed) return;
 
-        float scale;
-
-        if (_pressed)
+        float scale = 1f;
+        
+        if (Interactable)
         {
-            scale = _settings.PressedSize;
-        }
-        else if (_select)
-        {
-            scale = _settings.SelectedSize;
-        }
-        else
-        {
-            scale = 1f;
+            if (_pressed)
+            {
+                scale = _settings.PressedSize;
+            }
+            else if (_select)
+            {
+                scale = _settings.SelectedSize;
+            }
         }
 
         GlobalUISettings.TweenSettings tweenSettings = _settings.NormalSizeTween;
 
-        if (_oldPressed)
+        if (Interactable)
         {
-            tweenSettings = _settings.FromPressedSizeTween;
-        }
-        else if (_pressed)
-        {
-            tweenSettings = _settings.PressedSizeTween;
+            if (_oldPressed)
+            {
+                tweenSettings = _settings.FromPressedSizeTween;
+            }
+            else if (_pressed)
+            {
+                tweenSettings = _settings.PressedSizeTween;
+            }
         }
 
         _oldSelect = _select;
@@ -175,7 +192,7 @@ public class CustomButton : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     private void Update()
     {
-        if (!_pressed)
+        if (!_pressed || !Interactable)
         {
             visualsRect.anchoredPosition = _visualsStartPos;
             _shakeTimer = 0;

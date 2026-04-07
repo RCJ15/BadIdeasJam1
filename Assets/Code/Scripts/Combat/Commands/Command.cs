@@ -12,6 +12,8 @@ public abstract class Command : MonoBehaviour, ICommand
     public CommandType Type => type;
     public Color Color => type.Color();
     public Sprite Icon => icon;
+    public bool IconFlipX => iconFlipX;
+    public bool IconFlipY => iconFlipY;
 
     public string CommandName => commandName;
     public string FormattedCommandName
@@ -37,6 +39,8 @@ public abstract class Command : MonoBehaviour, ICommand
 
     [SerializeField] private CommandType type;
     [SerializeField] private Sprite icon;
+    [SerializeField] private bool iconFlipX;
+    [SerializeField] private bool iconFlipY;
 
     [Space]
     [SerializeField] private string commandName = "name goes here";

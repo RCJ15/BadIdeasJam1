@@ -49,11 +49,11 @@ public class WorldTooltip : TooltipProvider
         return new(screenBounds.center, screenBounds.size);
     }
 
-    protected override void Awake()
+    protected override void Start()
     {
-        base.Awake();
+        base.Start();
 
-        _camera = Camera.main;
+        _camera = GameCamera.Instance.Main;
     }
 
     protected override void OnEnable()

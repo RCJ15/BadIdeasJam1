@@ -47,6 +47,8 @@ MonoBehaviour:
   guid: 686e84cb54f19c94daeace294fcd8425
   type: 4
   icon: {fileID: 0}
+  iconFlipX: 0
+  iconFlipY: 0
   commandName: Loop
   description: Repeat all previous commands before this one except for any other
     #LOOP# commands
@@ -77,12 +79,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1797006483247061772}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2295108809137044867}
+  m_Father: {fileID: 5357124106769354859}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &401890622194298209
 MonoBehaviour:
@@ -99,6 +101,8 @@ MonoBehaviour:
   guid: 22db799a59ffdd744a9c4449beea8e0a
   type: 4
   icon: {fileID: 3286163911610860551, guid: cfba12efaca1e5a4f8e5f5a4faf623dd, type: 3}
+  iconFlipX: 0
+  iconFlipY: 0
   commandName: RangedAttack
   description: You're not supposed to see this...
   energy: 999
@@ -151,6 +155,8 @@ MonoBehaviour:
   guid: 11d6a1f7c28fc704ca7a23700be97274
   type: 1
   icon: {fileID: 3286163911610860551, guid: 5485f75c290a12c4893d2f15772dc569, type: 3}
+  iconFlipX: 1
+  iconFlipY: 0
   commandName: Turn Right
   description: Look right from your current direction
   energy: 5
@@ -193,7 +199,7 @@ Transform:
   - {fileID: 8139079993251869360}
   - {fileID: 1986868289343845298}
   - {fileID: 1952720797854653300}
-  - {fileID: 8879688827321843243}
+  - {fileID: 5357124106769354859}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8486237662725673805
@@ -269,11 +275,45 @@ MonoBehaviour:
   guid: 0a655e9bd6ed4a54d9a99c09fb89d996
   type: 1
   icon: {fileID: 3286163911610860551, guid: 5485f75c290a12c4893d2f15772dc569, type: 3}
+  iconFlipX: 0
+  iconFlipY: 0
   commandName: Turn Around
   description: Turn to face the opposite direction you're currently facing
   energy: 5
   duration: 0.5
   direction: 2
+--- !u!1 &4419747168679164469
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5357124106769354859}
+  m_Layer: 0
+  m_Name: '#EnemyExclusive'
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5357124106769354859
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4419747168679164469}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8879688827321843243}
+  m_Father: {fileID: 2295108809137044867}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5135573366781799478
 GameObject:
   m_ObjectHideFlags: 0
@@ -285,7 +325,7 @@ GameObject:
   - component: {fileID: 8139079993251869360}
   - component: {fileID: 8802773535099712843}
   m_Layer: 0
-  m_Name: Attack
+  m_Name: Bash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -321,7 +361,9 @@ MonoBehaviour:
   guid: 4028036a4e21443428fcd2d0b8b3a0cf
   type: 2
   icon: {fileID: 3286163911610860551, guid: cfba12efaca1e5a4f8e5f5a4faf623dd, type: 3}
-  commandName: Attack
+  iconFlipX: 0
+  iconFlipY: 0
+  commandName: Bash
   description: Attack directly in front of you, dealing #DAMAGE##SWORD# damage to
     anything that's there.
   energy: 20
@@ -373,6 +415,8 @@ MonoBehaviour:
   guid: d367e8f3bfc15974a8509374193da91b
   type: 1
   icon: {fileID: 3286163911610860551, guid: 5485f75c290a12c4893d2f15772dc569, type: 3}
+  iconFlipX: 0
+  iconFlipY: 0
   commandName: Turn Left
   description: Look left from your current direction
   energy: 5
@@ -425,6 +469,8 @@ MonoBehaviour:
   guid: 3835ddfa384ca1349b04ee603ae8d042
   type: 0
   icon: {fileID: 3286163911610860551, guid: 69d4196949a7fe34b9d8024f706b3f9f, type: 3}
+  iconFlipX: 0
+  iconFlipY: 0
   commandName: Move
   description: Move 1 tile forward in the direction you're facing
   energy: 10
@@ -483,7 +529,7 @@ GameObject:
   - component: {fileID: 1952720797854653300}
   - component: {fileID: 7323878604822482502}
   m_Layer: 0
-  m_Name: Heal
+  m_Name: Recover
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -519,7 +565,9 @@ MonoBehaviour:
   guid: 725b27403309abd4a8a3bdacfc608be8
   type: 4
   icon: {fileID: 3286163911610860551, guid: 52d1d01ce81b4c545ab1a4c5fa9832b6, type: 3}
-  commandName: Heal
+  iconFlipX: 0
+  iconFlipY: 0
+  commandName: Recover
   description: Heal 30#HEALTH# health.
   energy: 30
   duration: 0.5

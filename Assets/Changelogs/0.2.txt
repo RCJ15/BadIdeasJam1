@@ -1,0 +1,15 @@
+Update 0.2
+This update adds some features I wanted to have in the game before the jam period ended that I didn't have enough time to add. There is also a lot of minor tweaks and changes here based on the feedback I've received.
+
+- Added a title screen with a settings menu.
+- Added a unique boss enemy to the final encounter (it's no longer just every enemy at once).
+- Added a delete button to the left of a command when you hover over one.
+- Flipped the icon of <TURN_RIGHT> so it actually points to the right and not to the left.
+- Added a new icon for <TURN_AROUND> to distinguish it more from <TURN_RIGHT> and <TURN_LEFT>.
+- Renamed <ATTACK> to <BASH> to make it less generic.
+- Added a level up system and you now earn EXP from battles. The player has 6 distinct stats HEALTH, DEFENSE, POWER, ENERGY, CAPACITY and LUCK which all increase as you level up. For each level up the players receives they can choose 1 stat of their choice to further increase (like in the Mario & Luigi games). You will also unlock a new command at certain level thresholds.
+- Added some new commands: <BLOCK>, <COUNTER>, <PUSH>, <THROW>, <BOX_BREAK> (that one is special)
+- <HEAL> and <TURN_AROUND> are no longer unlocked at the start of the game and are unlocked through other means (like a level up). Also renamed <HEAL> to <RECOVER>.
+- 
+
+Thanks for reading.

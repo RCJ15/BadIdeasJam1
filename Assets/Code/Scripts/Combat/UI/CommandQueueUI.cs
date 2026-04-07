@@ -29,6 +29,9 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
 
     [Space]
     [SerializeField] private TMP_Text lineNumberTemplate;
+    [SerializeField] private CustomButton deleteButtonTemplate;
+    private CustomButton[] _deleteButtons;
+    private int _oldDeleteButtonIndex = -1;
     [SerializeField] private RectTransform seperatorTemplate;
     [SerializeField] private RectTransform pointer;
     [SerializeField] private Image pointerImage;
@@ -87,7 +90,8 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
     private int _mouseIndex;
 
     public int? Energy { get; set; }
-    public static bool DontInstantlyDestroyNextButton { get; set; } = false;
+    public static bool InstantlyDestroyNextCommand { get; set; }
+    public static bool InstantlyDestroyNextDraggable { get; set; }
 
     private int? _startEnergy;
 
@@ -108,6 +112,7 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         PlayerCommandQueue.Limit = maxCommandsAllowed;
 
         group.blocksRaycasts = false;
+        InstantlyDestroyNextDraggable = false;
     }
 
     private void Start()
@@ -134,6 +139,8 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
             _pool.Release(CreateEntry());
         }
 
+        _deleteButtons = new CustomButton[maxCommandsAllowed];
+
         string lineNumberFormat = lineNumberTemplate.text;
         for (int i = 0; i < maxCommandsAllowed; i++)
         {
@@ -145,6 +152,21 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
 
             float y = IndexToYPos(i);
             lineNumber.rectTransform.anchoredPosition = new(0, y);
+
+            // Delete button
+            CustomButton deleteButton = Instantiate(deleteButtonTemplate, deleteButtonTemplate.transform.parent);
+            deleteButton.gameObject.SetActive(true);
+
+            RectTransform deleteButtonRect = deleteButton.transform as RectTransform;
+            deleteButtonRect.anchoredPosition = new(deleteButtonRect.anchoredPosition.x, y);
+
+            deleteButton.Interactable = false;
+            int delteIndex = i;
+            deleteButton.OnClick.AddListener(() => DeleteEntry(delteIndex));
+
+            deleteButton.transform.localScale = new Vector3(1, 0, 1);
+
+            _deleteButtons[i] = deleteButton;
 
             // Seperator
             if (i == maxCommandsAllowed - 1)
@@ -160,6 +182,7 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         }
 
         lineNumberTemplate.gameObject.SetActive(false);
+        deleteButtonTemplate.gameObject.SetActive(false);
         seperatorTemplate.gameObject.SetActive(false);
 
         UpdateUI();
@@ -179,6 +202,7 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         Unsubscribe();
     }
 
+    #region Subscribing and Unsubscribing
     private void Subscribe()
     {
         PlayerCommandQueue.OnClear += OnClear;
@@ -199,6 +223,7 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         PlayerCommandQueue.OnSwap -= OnSwap;
         DraggableManager.OnDrag -= OnDrag;
     }
+    #endregion
 
     private void OnBeginPlayersTurn()
     {
@@ -348,8 +373,8 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
     private void OnRemove(int index)
     {
         CommandQueueUIEntry entry = _entries[index];
-        entry.Remove(!DontInstantlyDestroyNextButton);
-        DontInstantlyDestroyNextButton = false;
+        entry.Remove(InstantlyDestroyNextCommand);
+        InstantlyDestroyNextCommand = true;
         _entries.RemoveAt(index);
 
         SetDirty();
@@ -370,6 +395,8 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
 
     public void OnDrop(DraggableObject draggableObj)
     {
+        InstantlyDestroyNextDraggable = false;
+
         EmptySpaceIndex = null;
         _commandHover = false;
 
@@ -390,9 +417,12 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
                     continue;
                 }
 
+                InstantlyDestroyNextDraggable = true;
+
                 _nextWasDragged = true;
                 int index = _mouseIndex;
                 PlayerCommandQueue.Insert(index, command);
+                break;
             }
         }
     }
@@ -430,18 +460,13 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         _commandHover = false;
     }
 
-    private void UpdateEmptySpace()
-    {
-        EmptySpaceIndex = _mouseIndex - 1;
-    }
-
     private void Update()
     {
         Vector2 mousePos = GameInput.UI.Point;
 
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(_rect, mousePos, null, out Vector2 localPoint))
         {
-            float y = localPoint.y - _rect.sizeDelta.y / 2f;
+            float y = localPoint.y - (_rect.rect.height / 2f);
 
             _mouseIndex = YPosToIndex(y + entrySize / 2f);
         }
@@ -458,6 +483,28 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
             UpdateEmptySpace();
         }
 
+        // Delete button
+        int deleteButtonIndex;
+
+        if (!_mouseOnTop || _mouseIndex >= PlayerCommandQueue.Count || DraggableManager.IsDragging)
+        {
+            deleteButtonIndex = -1;
+        }
+        else
+        {
+            deleteButtonIndex = _mouseIndex;
+        }
+
+        if (_oldDeleteButtonIndex != deleteButtonIndex)
+        {
+            HideDeleteButton(_oldDeleteButtonIndex);
+
+            _oldDeleteButtonIndex = deleteButtonIndex;
+
+            ShowDeleteButton(deleteButtonIndex);
+        }
+
+        // POINTER & EXECUTION pointers
         void DisablePointer()
         {
             if (_pointerIndex.HasValue)
@@ -558,6 +605,7 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         }
     }
 
+    #region Index and YPos conversion
     public int YPosToIndex(float yPos)
     {
         int index = 0;
@@ -627,6 +675,7 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         return index;
     }
     */
+    #endregion
 
     private void UpdateEnergy()
     {
@@ -643,6 +692,12 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
         Energy = energy;
 
         OnUpdateEnergy?.Invoke(energy);
+    }
+
+    #region Empty Space
+    private void UpdateEmptySpace()
+    {
+        EmptySpaceIndex = _mouseIndex - 1;
     }
 
     public void AddEmptySpace(int index)
@@ -691,12 +746,49 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
 
         return success;
     }
+    #endregion
 
-    public int IndexOf(CommandQueueUIEntry commandQueueUIEntry)
+    public int IndexOf(CommandQueueUIEntry entry)
     {
-        return _entries.IndexOf(commandQueueUIEntry);
+        return _entries.IndexOf(entry);
     }
 
+    #region Delete Buttons
+    public void DeleteEntry(int index, bool instant = false)
+    {
+        if (index < 0 || index >= PlayerCommandQueue.Count) return;
+
+        Debug.Log("DELETING: " + index);
+
+        CommandQueueUIEntry entry = _entries[index];
+
+        entry.DeleteCommand(instant);
+    }
+
+    private void ShowDeleteButton(int index)
+    {
+        if (index < 0) return;
+
+        CustomButton button = _deleteButtons[index];
+        button.Interactable = true;
+
+        button.transform.DOKill();
+        button.transform.DOScaleY(1, 0.25f).SetEase(Ease.OutExpo);
+    }
+
+    private void HideDeleteButton(int index)
+    {
+        if (index < 0) return;
+
+        CustomButton button = _deleteButtons[index];
+        button.Interactable = false;
+
+        button.transform.DOKill();
+        button.transform.DOScaleY(0, 0.25f).SetEase(Ease.InExpo);
+    }
+    #endregion
+
+    #region Debug
     public void OnDebugGUI()
     {
         DebugGUI.Property("Energy", Energy.HasValue ? Energy.Value.ToString() : "null");
@@ -710,4 +802,5 @@ public class CommandQueueUI : Singleton<CommandQueueUI>, IPointerEnterHandler, I
             DebugGUI.Property(i.ToString(), _entries[i].YPosCanvas);
         }
     }
+    #endregion
 }

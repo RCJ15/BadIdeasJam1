@@ -118,24 +118,9 @@ public class CommandQueueUIEntry : MonoBehaviour, IPointerClickHandler, IDraggab
         visuals.TweenColor(new Color(1, 1, 1, 0.3f), duration);
     }
 
-    public void SwapUp()
+    public void DeleteCommand(bool instant)
     {
-        int index = Index;
-        if (index <= 0) return;
-
-        PlayerCommandQueue.SwapCommands(index, index - 1);
-    }
-
-    public void SwapDown()
-    {
-        int index = Index;
-        if (index < 0 || index >= PlayerCommandQueue.Count - 1) return;
-
-        PlayerCommandQueue.SwapCommands(index, index + 1);
-    }
-
-    public void DeleteCommand()
-    {
+        CommandQueueUI.InstantlyDestroyNextCommand = instant;
         PlayerCommandQueue.Remove(Index);
     }
 
@@ -164,7 +149,7 @@ public class CommandQueueUIEntry : MonoBehaviour, IPointerClickHandler, IDraggab
 
     public void OnDrag()
     {
-        DeleteCommand();
+        DeleteCommand(true);
         CommandDragVisual.Position = (Vector2)visuals.Text.transform.position + _textOffset;
     }
 
@@ -192,8 +177,7 @@ public class CommandQueueUIEntry : MonoBehaviour, IPointerClickHandler, IDraggab
         // Right click destroys this
         if (eventData.button == PointerEventData.InputButton.Right)
         {
-            CommandQueueUI.DontInstantlyDestroyNextButton = true;
-            DeleteCommand();
+            DeleteCommand(false);
         }
     }
 }

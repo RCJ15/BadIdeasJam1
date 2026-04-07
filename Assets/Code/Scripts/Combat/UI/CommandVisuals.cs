@@ -48,6 +48,7 @@ public class CommandVisuals : MonoBehaviour
             fitToText.Fit();
 
             icon.sprite = _command.Icon;
+            icon.transform.localScale = new(_command.IconFlipX ? -1 : 1, _command.IconFlipY ? -1 : 1, 1);
 
             UpdateColor();
 

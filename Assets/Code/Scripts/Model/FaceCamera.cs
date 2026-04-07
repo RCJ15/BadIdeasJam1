@@ -11,9 +11,25 @@ public class FaceCamera : MonoBehaviour
     private Quaternion _oldRotation;
     private Quaternion _oldCameraRotation;
 
+    /*
     private void Awake()
     {
         _cameraTransform = Camera.main.transform;
+    }
+    */
+
+    private void Start()
+    {
+        GameCamera cam = GameCamera.Instance;
+
+        if (cam == null)
+        {
+            _cameraTransform = Camera.main.transform;
+        }
+        else
+        {
+            _cameraTransform = cam.CameraTransform;
+        }
     }
 
     private void Update()

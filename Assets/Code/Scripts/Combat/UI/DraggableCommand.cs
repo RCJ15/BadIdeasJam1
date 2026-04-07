@@ -20,6 +20,7 @@ public class DraggableCommand : MonoBehaviour, IDraggable
 
     public void OnDrop(DraggableReceiver receiver)
     {
-        CommandDragVisual.SetCommand(null, receiver != null);
+        CommandDragVisual.SetCommand(null, CommandQueueUI.InstantlyDestroyNextDraggable);
+        CommandQueueUI.InstantlyDestroyNextDraggable = false;
     }
 }

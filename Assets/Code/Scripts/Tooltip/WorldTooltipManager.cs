@@ -13,14 +13,14 @@ public class WorldTooltipManager : Singleton<WorldTooltipManager>
 
     private void Start()
     {
-        _camera = Camera.main;
+        _camera = GameCamera.Instance.Main;
     }
 
     private void LateUpdate()
     {
         if (_camera == null)
         {
-            _camera = Camera.main;
+            _camera = GameCamera.Instance.Main;
         }
 
         if (_camera == null)

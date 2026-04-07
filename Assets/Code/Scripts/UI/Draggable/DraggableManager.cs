@@ -76,12 +76,12 @@ public class DraggableManager : Singleton<DraggableManager>, IComponentDebugGUI
         {
             DraggableReceiver receiver = ActiveReceivers.Count > 0 ? ActiveReceivers[0] : null;
 
-            CurrentDraggable.OnDrop(receiver);
-
             if (receiver != null)
             {
                 receiver.OnDrop(CurrentDraggable);
             }
+
+            CurrentDraggable.OnDrop(receiver);
 
             CurrentDraggable = null;
         }

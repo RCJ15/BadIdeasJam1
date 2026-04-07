@@ -26,6 +26,11 @@ public class PointerOverworld : Singleton<PointerOverworld>
         Hit = false;
     }
 
+    private void Start()
+    {
+        _camera = GameCamera.Instance.Main;
+    }
+
     private void OnDestroy()
     {
         Hit = false;
@@ -35,7 +40,7 @@ public class PointerOverworld : Singleton<PointerOverworld>
     {
         if (_camera == null)
         {
-            _camera = Camera.main;
+            _camera = GameCamera.Instance.Main;
         }
 
         if (_camera == null) return;
