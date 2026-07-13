@@ -1,9 +1,11 @@
 using UnityEngine;
+using DebugTools;
+
 #if UNITY_EDITOR
 using UnityEditor;
 #endif
 
-public class Board : Singleton<Board>
+public class Board : Singleton<Board>, IComponentDebugGUI
 {
     [CacheComponent]
     [SerializeField] private Grid grid;
@@ -27,6 +29,10 @@ public class Board : Singleton<Board>
 
     [Space]
     [SerializeField] private Tile tileTemplate;
+
+    public Vector2Int Size => size;
+    public int Width => size.x;
+    public int Height => size.y;
 
     public Tile[,] Tiles => _tiles;
     private Tile[,] _tiles;
@@ -95,6 +101,10 @@ public class Board : Singleton<Board>
         {
             tile.UpdatePos();
         }
+
+#if UNITY_EDITOR
+        EditorUtility.SetDirty(this);
+#endif
     }
 
     public Vector2Int ClampPos(Vector2Int pos) => new(ClampX(pos.x), ClampY(pos.y));
@@ -124,6 +134,26 @@ public class Board : Singleton<Board>
         pos = ClampPos(pos);
 
         return pos;
+    }
+
+    public void OnDebugGUI()
+    {
+        using (new DisableGUIScope(true))
+        {
+            float cellSize = 20f;
+
+            Rect overallRect = DebugGUI.GetLayoutRect(cellSize * (float)size.x, cellSize * (float)size.y);
+            DebugGUI.DrawRect(overallRect, new(0, 0, 0, 0.1f));
+
+            for (int x = 0; x < size.x; x++)
+            {
+                for (int y = 0; y < size.y; y++)
+                {
+                    Rect rect = new(new Vector2(overallRect.xMin, overallRect.yMax) + new Vector2((float)x * cellSize, (float)(y + 1) * -cellSize), cellSize * Vector2.one);
+                    DebugGUI.Toggle(rect, Tiles[x, y].Occupied);
+                }
+            }
+        }
     }
 
 #if UNITY_EDITOR
@@ -156,60 +186,3 @@ public class Board : Singleton<Board>
     }
 #endif
 }
-
-#if UNITY_EDITOR
-[CustomEditor(typeof(Board))]
-public class BoardEditor : Editor
-{
-    private Board _board;
-
-    private void OnEnable()
-    {
-        _board = (Board)target;
-    }
-
-    public override void OnInspectorGUI()
-    {
-        serializedObject.UpdateIfRequiredOrScript();
-        SerializedProperty prop = serializedObject.GetIterator();
-
-        bool enterChildren = true;
-
-        while (prop.NextVisible(enterChildren))
-        {
-            string path = prop.propertyPath;
-
-            enterChildren = false;
-
-            switch (path)
-            {
-                case "m_Script":
-                    continue;
-            }
-
-            EditorGUILayout.PropertyField(prop, true);
-
-            switch(path)
-            {
-                case "size":
-                    Grid grid = _board.GetComponentInChildren<Grid>(true);
-
-                    Undo.RecordObject(grid, "Change Cell Size/Gap");
-
-                    EditorGUI.BeginChangeCheck();
-
-                    grid.cellSize = EditorGUILayout.Vector3Field("Cell Size", grid.cellSize);
-                    grid.cellGap = EditorGUILayout.Vector3Field("Cell Gap", grid.cellGap);
-
-                    if (EditorGUI.EndChangeCheck())
-                    {
-                        _board.OnValidate();
-                    }
-                    break;
-            }
-        }
-
-        serializedObject.ApplyModifiedProperties();
-    }
-}
-#endif

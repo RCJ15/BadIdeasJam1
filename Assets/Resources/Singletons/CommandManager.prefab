@@ -274,7 +274,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MoveCommand
   guid: 0a655e9bd6ed4a54d9a99c09fb89d996
   type: 1
-  icon: {fileID: 3286163911610860551, guid: 5485f75c290a12c4893d2f15772dc569, type: 3}
+  icon: {fileID: 3286163911610860551, guid: e2333ed4682109c489fdaecfef7c9656, type: 3}
   iconFlipX: 0
   iconFlipY: 0
   commandName: Turn Around

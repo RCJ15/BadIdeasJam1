@@ -10,8 +10,8 @@ public class DirectionalEnemy : EnemyCombat
         var playerRelativeDirection = targetDirection switch
         {
             Direction.Down => playerDir.Opposite(),
-            Direction.Left => playerDir.RotateCounterClockwise(),
-            Direction.Right => playerDir.RotateClockwise(),
+            Direction.Left => playerDir.TurnLeft(),
+            Direction.Right => playerDir.TurnRight(),
             _ => playerDir,
         };
         return _player.GetTile(playerRelativeDirection);

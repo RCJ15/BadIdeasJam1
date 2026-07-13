@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 /// <summary>
@@ -13,23 +15,23 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
     private static readonly HashSet<Vector2Int> _closed = new();
     private static readonly Dictionary<Vector2Int, Tile> _parentMap = new();
 
-    // Potential settings
+    // Potential settings go here
 
-    public static List<Tile> FindPath(Vector2Int start, Vector2Int end)
+    public static async Task<List<Tile>> FindPath(Vector2Int start, Vector2Int end, CancellationToken token)
     {
         List<Tile> result = new();
-        FindPath(start, end, result);
+        await FindPath(start, end, result, token);
         return result;
     }
 
-    public static List<Tile> FindPath(Tile start, Tile end)
+    public static async Task<List<Tile>> FindPath(Tile start, Tile end, CancellationToken token)
     {
         List<Tile> result = new();
-        FindPath(start, end, result);
+        await FindPath(start, end, result, token);
         return result;
     }
 
-    public static void FindPath(Vector2Int start, Vector2Int end, List<Tile> list)
+    public static async Task FindPath(Vector2Int start, Vector2Int end, List<Tile> list, CancellationToken token)
     {
         Board board = Board.Instance;
 
@@ -39,10 +41,10 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
             return;
         }
 
-        FindPath(board.GetTile(start), board.GetTile(end), list);
+        await FindPath(board.GetTile(start), board.GetTile(end), list, token);
     }
 
-    public static void FindPath(Tile start, Tile end, List<Tile> list)
+    public static async Task FindPath(Tile start, Tile end, List<Tile> list, CancellationToken token)
     {
         list.Clear();
 
@@ -51,18 +53,28 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
 
         bool endOccupied = end.Occupied;
 
+        await Awaitable.BackgroundThreadAsync();
+
+        Tile closest = start;
+        float closestH = TileUtility.Distance(start, end);
+
         _open.Clear();
         _scores.Clear();
         _closed.Clear();
         _parentMap.Clear();
 
         _open.Add(start);
-        _scores.Add(start, new(start, 0, Distance(start, end)));
+        _scores.Add(start, new(start, 0, TileUtility.Distance(start, end)));
 
         int count = 1;
 
         while (count > 0)
         {
+            if (token.IsCancellationRequested)
+            {
+                throw new OperationCanceledException();
+            }
+
             // Get the tile with the lowest F cost
             Tile current = null;
             int index = -1;
@@ -79,6 +91,13 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
                     currentScores = score;
                     index = i;
                 }
+            }
+
+            // Set closest tile
+            if (currentScores.H < closestH)
+            {
+                closestH = currentScores.H;
+                closest = current;
             }
 
             // Reached end???
@@ -109,7 +128,7 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
 
             if (reachedEnd)
             {
-                ConstructPath(_parentMap, current, list);
+                await ConstructPath(_parentMap, current, list, token);
                 return;
             }
 
@@ -118,11 +137,29 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
 
             _closed.Add(current.GridPos);
 
+            // Go through all valid neighbors around the current tile and label them as next to be searched
             for (int i = 0; i < 4; i++)
             {
+                if (token.IsCancellationRequested)
+                {
+                    throw new OperationCanceledException();
+                }
+
                 Tile neighbor = current.Neighbors[i];
 
-                if (neighbor == null || _closed.Contains(neighbor.GridPos) || neighbor.Occupied) continue;
+                await Awaitable.MainThreadAsync();
+
+                try
+                {
+                    if (neighbor == null || _closed.Contains(neighbor.GridPos) || neighbor.Occupied)
+                    {
+                        continue;
+                    }
+                }
+                finally
+                {
+                    await Awaitable.BackgroundThreadAsync();
+                }
 
                 float tentativeG = currentScores.G + 1;
 
@@ -133,11 +170,12 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
 
                 score.Tile = neighbor;
                 score.G = tentativeG;
-                score.H = Distance(neighbor, end);
+                score.H = TileUtility.Distance(neighbor, end);
 
                 _scores[neighbor] = score;
 
                 // Set the current node as the parent of the neighbor
+                // As in the neighbor should follow back to this tile
                 _parentMap[neighbor.GridPos] = current;
 
                 if (!_open.Contains(neighbor))
@@ -148,37 +186,32 @@ public class EnemyPathfinding : Singleton<EnemyPathfinding>
             }
         }
 
-        // Couldn't find path :(
+        // Couldn't find direct line to goal so take the next best
+        if (closest != null)
+        {
+            await ConstructPath(_parentMap, closest, list, token);
+        }
     }
 
-    private static List<Tile> ConstructPath(Dictionary<Vector2Int, Tile> parentMap, Tile current, List<Tile> output)
+    private static async Task ConstructPath(Dictionary<Vector2Int, Tile> parentMap, Tile current, List<Tile> output, CancellationToken token)
     {
+        await Awaitable.BackgroundThreadAsync();
+
         output.Add(current);
 
         while (parentMap.ContainsKey(current.GridPos))
         {
+            if (token.IsCancellationRequested)
+            {
+                throw new OperationCanceledException();
+            }
+
             current = parentMap[current.GridPos];
 
             output.Add(current);
         }
 
         output.Reverse();
-
-        return output;
-    }
-
-    public static float Distance(Tile t1, Tile t2)
-    {
-        return Distance(t1.GridPos, t2.GridPos);
-    }
-    public static float Distance(Vector2Int p1, Vector2Int p2)
-    {
-        return Mathf.Abs(p1.x - p2.x) + Mathf.Abs(p1.y - p2.y);
-    }
-
-    internal static List<Tile> FindPath(Tile tile1, object tile2)
-    {
-        throw new NotImplementedException();
     }
 
     public struct TileScores

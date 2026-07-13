@@ -34,7 +34,10 @@ public static class DirectionExtensions
         };
     }
 
-    public static Direction RotateClockwise(this Direction direction)
+    /// <summary>
+    /// Clockwise
+    /// </summary>
+    public static Direction TurnRight(this Direction direction)
     {
         return direction switch
         {
@@ -46,7 +49,10 @@ public static class DirectionExtensions
         };
     }
 
-    public static Direction RotateCounterClockwise(this Direction direction)
+    /// <summary>
+    /// Counter clockwise
+    /// </summary>
+    public static Direction TurnLeft(this Direction direction)
     {
         return direction switch
         {

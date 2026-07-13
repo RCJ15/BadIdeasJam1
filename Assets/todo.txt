@@ -2,13 +2,19 @@
 ✅ Rename <ATTACK> to <BASH>
 ✅ Rename <HEAL> to <RECOVER>
 ✅ Convert all Camera.main to GameCamera
-Fix misalignment on WorldTooltips
+✅ Fix misalignment on WorldTooltips
 Fix screen transition on weird resolutions
-Fix screen transition image on edges of screen
-Unique icon for <TURN_AROUND>
+Fix screen transition texture on edges of screen
+✅ Unique icon for <TURN_AROUND>
+Better battle design system (prefabs)
+Fix Draggable Command offset
 ✅ Delete button when hovering over commands
-Better "run away" logic for Green Box with Legs (reverse A*)
-Fix "face toward" functionality in code to work regardless of distance
+✅ Better "run away" logic for Green Box with Legs (reverse A*)
+✅ Fix Green Box with Legs animations not looping
+✅ Have enemy pathfinding find the nearest approximate
+✅ Make pathfinding async
+Make pathfinding use C# Jobs
+✅ Fix "face toward" functionality in code to work regardless of distance
 Make "Awaiting Turn..." message not display on battle win
 Damage numbers
 Improve overworld

@@ -5,14 +5,14 @@ using DG.Tweening;
 using System.Collections.Generic;
 using System.Collections;
 
-public abstract class Unit : MonoBehaviour
+public abstract class Unit : MonoBehaviour, IComparable<Unit>
 {
     public static readonly List<Unit> AllUnits = new List<Unit>();
 
     public Vector2Int GridPos => gridPos;
     public Tile Tile => tile;
 
-    protected Vector2Int gridPos;
+    protected Vector2Int gridPos = new(-1, -1);
     protected Tile tile;
     protected Board board;
 
@@ -200,8 +200,8 @@ public abstract class Unit : MonoBehaviour
         string animation;
         bool turnAround = false;
 
-        if (oldDir.RotateClockwise() == newDir) animation = "TurnRight";
-        else if (oldDir.RotateCounterClockwise() == newDir) animation = "TurnLeft";
+        if (oldDir.TurnRight() == newDir) animation = "TurnRight";
+        else if (oldDir.TurnLeft() == newDir) animation = "TurnLeft";
         else
         {
             animation = "TurnAround";
@@ -346,6 +346,15 @@ public abstract class Unit : MonoBehaviour
     public Tile GetTile(Vector2Int offset)
     {
         return board.GetTile(GridPos + offset);
+    }
+
+    public int CompareTo(Unit other)
+    {
+        int heightMultiplier = board.Height;
+        int a = TileUtility.ValueFromGridPosition(gridPos, heightMultiplier);
+        int b = TileUtility.ValueFromGridPosition(other.gridPos, heightMultiplier);
+
+        return a.CompareTo(b);
     }
 
 #if UNITY_EDITOR

@@ -29,6 +29,10 @@ namespace DebugTools
             return _tempContent;
         }
 
+        public static Rect GetLayoutRect(float width, float height)
+        {
+            return GUILayoutUtility.GetRect(width, height);
+        }
         public static Rect GetLayoutRect(string label, GUIStyle style)
         {
             return GUILayoutUtility.GetRect(TempGUIContent(label), style);
@@ -516,6 +520,17 @@ namespace DebugTools
         public static void Space(float spacing)
         {
             GUILayout.Space(spacing);
+        }
+
+        /// <summary>
+        /// Draws a blank rectangle with the given <paramref name="color"/>.
+        /// </summary>
+        public static void DrawRect(Rect rect, Color color)
+        {
+            Color startColor = GUI.color;
+            GUI.color *= color;
+            GUI.DrawTexture(rect, Texture2D.whiteTexture);
+            GUI.color = startColor;
         }
     }
 }

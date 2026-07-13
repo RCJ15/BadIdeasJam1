@@ -362,6 +362,7 @@
     "isMainTexture": true,
     "useTilingAndOffset": false,
     "useTexelSize": true,
+    "isHDR": false,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -594,7 +595,7 @@
         "HLSL"
     ],
     "m_Precision": 0,
-    "m_PreviewExpanded": false,
+    "m_PreviewExpanded": true,
     "m_DismissedVersion": 0,
     "m_PreviewMode": 0,
     "m_CustomColors": {
@@ -602,9 +603,9 @@
     },
     "m_SourceType": 1,
     "m_FunctionName": "GaussianBlur",
-    "m_FunctionSource": "",
+    "m_FunctionSource": "0d7edbe5a1496534598366b77df9972e",
     "m_FunctionSourceUsePragmas": true,
-    "m_FunctionBody": "float4 col = float4(0.0, 0.0, 0.0, 0.0);\r\nfloat kernelSum = 0.0;\n\rint upper = ((Blur - 1) / 2);\r\nint lower = -upper;\r\n\r\nfor (int x = lower; x <= upper; ++x)\r\n{\r\n\tfor (int y = lower; y <= upper; ++y)\r\n\t\t{\r\n\t\t\tkernelSum++;\r\n\r\n\t\t\tfloat2 offset = float2(Texture_TexelSize.x * x, Texture_TexelSize.y * y);\r\n\t\t\tcol += Texture.Sample(Sampler, UV + offset);\r\n\t\t}\r}\r\n\ncol /= kernelSum;\r\n\nOut_RGB = float3(col.r, col.g, col.b);\r\nOut_Alpha = col.a;"
+    "m_FunctionBody": "float4 col = float4(0.0, 0.0, 0.0, 0.0);\r\n\r\nfloat kernelSum = 0.0;\r\n\r\nint upper = ((Blur - 1) / 2);\r\nint lower = -upper;\r\n\r\nfor (int x = lower; x <= upper; ++x)\r\n{\r\n\tfor (int y = lower; y <= upper; ++y)\r\n\t{\r\n\t\tkernelSum++;\r\n\r\n\t\tfloat2 offset = float2(Texture_TexelSize.x * x, Texture_TexelSize.y * y);\r\n\t\tcol += Texture.Sample(Sampler, UV + offset);\r\n\t}\r\n}\r\n\r\ncol /= kernelSum;\r\n\r\nOut_RGB = float3(col.r, col.g, col.b);\r\nOut_Alpha = col.a;"
 }
 
 {

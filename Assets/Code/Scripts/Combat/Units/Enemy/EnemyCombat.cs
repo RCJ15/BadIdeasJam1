@@ -1,4 +1,6 @@
+using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class EnemyCombat : Unit
@@ -17,6 +19,9 @@ public class EnemyCombat : Unit
 
     public int Speed => speed;
     public bool ExecutingCommands { get; private set; }
+
+    protected Direction _currentDirection;
+    protected Tile _currentTile;
 
     protected override void OnEnable()
     {
@@ -44,46 +49,49 @@ public class EnemyCombat : Unit
         // DEBUG
         if (UnityEngine.InputSystem.Keyboard.current.kKey.wasPressedThisFrame)
         {
-            PerformTurn();
+            Debug.Log("DEBUG: Executing \"" + name + "\" turn now!");
+            StartCoroutine(PerformTurn());
         }
 #endif
     }
 
-    public void PerformTurn()
+    public IEnumerator PerformTurn()
     {
         List<Command> commands = new();
 
         // Move to player
-        Tile currentTile = tile;
-        Tile playerTile = _player.Tile;
-        Direction currentDirection = FacingDirection;
-        Direction newDirection;
+        _currentTile = tile;
+        _currentDirection = FacingDirection;
 
         void Attack()
         {
-            if (CanAttackPlayer(currentTile))
+            if (CanAttackPlayer(_currentTile))
             {
-                FaceTowardTile(commands, currentDirection, currentTile, playerTile, out newDirection);
-                currentDirection = newDirection;
+                FaceTowardTile(commands, _currentTile, _player.Tile);
 
                 commands.Add(attackCommand);
             }
         }
 
-        void Move()
+        IEnumerator Move()
         {
-            AddCommandsToMoveToTile(commands, tile, TargetTile(currentTile), currentDirection, out currentTile, out newDirection);
-            currentDirection = newDirection;
+            return AddCommandsToMoveToTile(commands, _currentTile, TargetTile(_currentTile));
         }
 
         if (AttackFirst())
         {
             Attack();
-            Move();
+            if (speed > 0)
+            {
+                yield return Move();
+            }
         }
         else
         {
-            Move();
+            if (speed > 0)
+            {
+                yield return Move();
+            }
             Attack();
         }
 
@@ -105,29 +113,25 @@ public class EnemyCombat : Unit
 
     protected virtual void AddCommands(List<Command> list) { }
 
-    protected void AddCommandsToMoveToTile(List<Command> list, Tile start, Tile target, Direction currentDirection, out Tile destination, out Direction direction)
+    protected IEnumerator AddCommandsToMoveToTile(List<Command> list, Tile start, Tile target)
     {
-        if (start == target)
+        if (start == target || speed <= 0)
         {
-            direction = currentDirection;
-            destination = start;
-            return;
+            yield break;
         }
 
         bool targetOccupied = target.Occupied;
-        EnemyPathfinding.FindPath(start, target, _path);
+
+        Task task = EnemyPathfinding.FindPath(start, target, _path, destroyCancellationToken);
+        yield return new WaitUntil(() => task.IsCompleted);
 
         // Navigate path using commands
         int count = _path.Count;
 
         if (count <= 0)
         {
-            direction = currentDirection;
-            destination = start;
-            return;
+            yield break;
         }
-
-        currentDirection = FacingDirection;
 
         int moveAmount = Mathf.Min(count - 1, speed);
         bool canReachTarget = moveAmount >= count - 1;
@@ -137,8 +141,7 @@ public class EnemyCombat : Unit
             Tile tile = _path[i];
             Tile nextTile = _path[i + 1];
 
-            FaceTowardTile(list, currentDirection, tile, nextTile, out Direction newDirection);
-            currentDirection = newDirection;
+            FaceTowardTile(list, tile, nextTile);
 
             list.Add(_settings.Move);
         }
@@ -147,65 +150,29 @@ public class EnemyCombat : Unit
         {
             Tile currentTile = _path[moveAmount];
             Tile lastTile = _path[moveAmount + 1];
-            FaceTowardTile(list, currentDirection, currentTile, lastTile, out Direction newDirection);
-            currentDirection = newDirection;
+            FaceTowardTile(list, currentTile, lastTile);
 
-            destination = currentTile;
+            _currentTile = currentTile;
         }
         else if (targetOccupied)
         {
             Tile lastTile = _path[count - 1];
-            FaceTowardTile(list, currentDirection, lastTile, target, out Direction newDirection);
-            currentDirection = newDirection;
+            FaceTowardTile(list, lastTile, target);
 
-            destination = lastTile;
+            _currentTile = lastTile;
         }
         else
         {
-            destination = _path[count - 1];
+            _currentTile = _path[count - 1];
         }
-
-        direction = currentDirection;
     }
 
-    protected void FaceTowardTile(List<Command> list, Direction currentDirection, Tile from, Tile to, out Direction direction)
+    protected void FaceTowardTile(List<Command> list, Tile from, Tile to)
     {
-        Vector2Int fromPos = from.GridPos;
-        Vector2Int toPos = to.GridPos;
+        Direction direction = TileUtility.FaceToward(from, to, _currentDirection);
 
-        Vector2Int difference = toPos - fromPos;
-        direction = Vector2IntToDirection(difference);
-
-        AddCommandForDirection(list, currentDirection, direction);
-    }
-
-    protected Direction Vector2IntToDirection(Vector2Int vector2Int)
-    {
-        if (vector2Int.magnitude > 1.5f)
-        {
-            vector2Int = Vector2Int.FloorToInt((Vector2)vector2Int / vector2Int.magnitude);
-        }
-
-        // Down
-        if (vector2Int == Vector2Int.down)
-        {
-            return Direction.Down;
-        }
-        // Left
-        else if (vector2Int == Vector2Int.left)
-        {
-            return Direction.Left;
-        }
-        // Right
-        else if (vector2Int == Vector2Int.right)
-        {
-            return Direction.Right;
-        }
-        // Up (default)
-        else
-        {
-            return Direction.Up;
-        }
+        AddCommandForDirection(list, _currentDirection, direction);
+        _currentDirection = direction;
     }
 
     protected void AddCommandForDirection(List<Command> list, Direction from, Direction to)

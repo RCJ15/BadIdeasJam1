@@ -523,7 +523,7 @@ public class CameraScreenshotWindow : EditorWindow
         // Disable motion blur
         List<VolumeComponent> motionBlurComponents = new List<VolumeComponent>();
 
-        foreach (Volume volume in FindObjectsByType<Volume>(FindObjectsSortMode.None))
+        foreach (Volume volume in FindObjectsByType<Volume>())
         {
             VolumeProfile profile = volume.sharedProfile;
 

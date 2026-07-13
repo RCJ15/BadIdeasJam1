@@ -46,7 +46,7 @@ public class WorldTooltip : TooltipProvider
             }
         }
         
-        return new(screenBounds.center, screenBounds.size);
+        return new(screenBounds.min, screenBounds.size);
     }
 
     protected override void Start()

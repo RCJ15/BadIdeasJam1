@@ -331,7 +331,7 @@ public class UIDissolve : BaseMeshEffect, IMaterialModifier
         }
 
         uint shaderVariantId = (uint)((int)edgeColorMode << 6);
-        uint resourceId = (uint)TransitionTexture.GetInstanceID();
+        uint resourceId = (uint)TransitionTexture.GetEntityId().GetHashCode();
 
         bool[] booleans = new[] { invert, pixelPerfect };
         int combinedBooleans = 0;
@@ -341,7 +341,7 @@ public class UIDissolve : BaseMeshEffect, IMaterialModifier
         }
 
         return new Hash128(
-            (uint)material.GetInstanceID(),
+            (uint)material.GetEntityId().GetHashCode(),
             _shaderId + shaderVariantId,
             (uint)combinedBooleans,
             resourceId

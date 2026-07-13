@@ -95,9 +95,12 @@ public class CombatManager : Singleton<CombatManager>
 
         yield return CoroutineUtility.GetWait(0.5f);
 
+        // Sort enemies based on their position on the board
+        EnemyCombat.AllEnemies.Sort();
+
         foreach (EnemyCombat enemy in EnemyCombat.AllEnemies)
         {
-            enemy.PerformTurn();
+            yield return enemy.StartCoroutine(enemy.PerformTurn());
 
             yield return null;
             yield return new WaitWhile(() => enemy.ExecutingCommands);

@@ -74,10 +74,5 @@ public class Tile : MonoBehaviour
     }
 
     public bool IsAdjacentTo(Tile tile) => IsAdjacentTo(tile.GridPos);
-
-    public bool IsAdjacentTo(Vector2Int pos)
-    {
-        Vector2Int delta = GridPos - pos;
-        return (Mathf.Abs(delta.x) == 1 && delta.y == 0) || (delta.x == 0 && Mathf.Abs(delta.y) == 1);
-    }
+    public bool IsAdjacentTo(Vector2Int pos) => TileUtility.IsAdjacentTo(GridPos, pos);
 }

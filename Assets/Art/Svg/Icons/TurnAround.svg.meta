@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5485f75c290a12c4893d2f15772dc569
+guid: e2333ed4682109c489fdaecfef7c9656
 ScriptedImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -39,7 +39,7 @@ ScriptedImporter:
   useSVGPixelsPerUnit: 0
   spriteData:
     TessellationDetail: 0
-    SpriteName: RotateSprite
+    SpriteName: TurnAroundSprite
     SpritePivot: {x: 0.5, y: 0.5}
     SpriteAlignment: 0
     SpriteBorder: {x: 0, y: 0, z: 0, w: 0}
@@ -47,7 +47,7 @@ ScriptedImporter:
       serializedVersion: 2
       x: 0
       y: 0
-      width: 126.99053
-      height: 125.11333
-    SpriteID: 573fad5a439030e4d86155931df56cbd
+      width: 111.65646
+      height: 121.65383
+    SpriteID: dc770e44954429348b13a85bc599e2a0
     PhysicsOutlines: []
